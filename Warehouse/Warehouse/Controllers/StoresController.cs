@@ -53,7 +53,7 @@ namespace Warehouse.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name")] Store store)
+        public async Task<IActionResult> Create([Bind("Id,Name")] StoreDto store)
         {
             if (ModelState.IsValid)
             {
@@ -85,7 +85,7 @@ namespace Warehouse.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(byte id, [Bind("Id,Name")] Store store)
+        public async Task<IActionResult> Edit(byte id, [Bind("Id,Name")] StoreDto store)
         {
             if (id != store.Id)
             {
