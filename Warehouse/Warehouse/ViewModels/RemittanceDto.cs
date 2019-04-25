@@ -7,8 +7,10 @@
 
     public class RemittanceDto
     {
-        public long Id { get; set; }
-
+        [Display(Name = "کد")]
+        [Required]
+        [StringLength(50, MinimumLength = 1,
+            ErrorMessage = "تعداد کاراکترها در محدوده مجاز نمیباشد!")]
         public string Code { get; set; }
 
         [Display(Name = "نوع حواله")]

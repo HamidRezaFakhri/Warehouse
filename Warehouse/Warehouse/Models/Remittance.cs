@@ -2,11 +2,10 @@
 {
     using System;
     using System.Collections.Generic;
+    using Warehouse.Entities;
 
-    public class Remittance
+    public class Remittance : EntityBase
     {
-        public long Id { get; set; }
-
         public string Code { get; set; }
 
         public RemittanceType RemittanceType { get; set; }
@@ -15,11 +14,11 @@
 
         public byte StoreId { get; set; }
 
-        public virtual StoreDto Store { get; set; }
+        public virtual Store Store { get; set; }
 
         public long UserId { get; set; }
 
-        public virtual UserDto User { get; set; }
+        public virtual User User { get; set; }
 
         public string Description { get; set; }
 

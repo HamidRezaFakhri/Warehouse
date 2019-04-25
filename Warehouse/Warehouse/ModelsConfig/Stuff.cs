@@ -5,9 +5,9 @@
     using Microsoft.EntityFrameworkCore.Metadata.Builders;
     using Warehouse.Models;
 
-    public class StuffConfig : IEntityTypeConfiguration<StuffDto>
+    public class StuffConfig : IEntityTypeConfiguration<Stuff>
     {
-        public void Configure(EntityTypeBuilder<StuffDto> builder)
+        public void Configure(EntityTypeBuilder<Stuff> builder)
         {
             builder.HasKey(e => e.Id);
 

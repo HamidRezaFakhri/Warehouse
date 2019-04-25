@@ -2,11 +2,10 @@
 {
     using System;
     using System.Collections.Generic;
+    using Warehouse.Entities;
 
-    public class UserDto
+    public class User : EntityBase
     {
-        public long Id { get; set; }
-
         public string UserName { get; set; }
         
         public string Password { get; set; }
@@ -18,7 +17,5 @@
         public Guid InstanceId { get; set; }
 
         public virtual ICollection<Remittance> Remittances { get; set; }
-
-        public virtual ICollection<Stuff> Stuffs { get; set; }
     }
 }

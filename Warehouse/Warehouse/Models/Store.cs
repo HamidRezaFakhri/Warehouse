@@ -2,11 +2,10 @@
 {
     using System;
     using System.Collections.Generic;
+    using Warehouse.Entities;
 
-    public class StoreDto
+    public class Store : EntityBase
     {
-        public byte Id { get; set; }
-
         public string Name { get; set; }
 
         public virtual ICollection<Remittance> Remittances { get; set; }

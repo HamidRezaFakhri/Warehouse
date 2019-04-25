@@ -1,5 +1,6 @@
 ﻿namespace Warehouse.ViewModels
 {
+    using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
     public class UserDto
@@ -22,5 +23,7 @@
         public long RoleId { get; set; }
 
         public virtual RoleDto Role { get; set; }
+
+        public virtual ICollection<RemittanceDto> Remittances { get; set; }
     }
 }

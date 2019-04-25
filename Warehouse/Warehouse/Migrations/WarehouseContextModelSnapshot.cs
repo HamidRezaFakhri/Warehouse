@@ -37,6 +37,12 @@ namespace Warehouse.Migrations
                         .ValueGeneratedOnAdd()
                         .HasDefaultValueSql("GETDATE()");
 
+                    b.Property<Guid>("InstanceId")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasDefaultValueSql("NEWID()");
+
                     b.Property<byte>("RemittanceType");
 
                     b.Property<byte>("StoreId");
@@ -63,15 +69,22 @@ namespace Warehouse.Migrations
 
                     b.Property<int>("Count");
 
+                    b.Property<Guid>("InstanceId")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasDefaultValueSql("NEWID()");
+
                     b.Property<long>("RemittanceId");
 
                     b.Property<long>("StuffId");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("RemittanceId");
-
                     b.HasIndex("StuffId");
+
+                    b.HasIndex("RemittanceId", "StuffId")
+                        .IsUnique();
 
                     b.ToTable("RemittanceStuff","dbo");
                 });
@@ -81,6 +94,12 @@ namespace Warehouse.Migrations
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<Guid>("InstanceId")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasDefaultValueSql("NEWID()");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -100,6 +119,12 @@ namespace Warehouse.Migrations
                     b.Property<byte>("Id")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<Guid>("InstanceId")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasDefaultValueSql("NEWID()");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -129,12 +154,16 @@ namespace Warehouse.Migrations
 
                     b.Property<string>("Description");
 
+                    b.Property<Guid>("InstanceId")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasDefaultValueSql("NEWID()");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(100)
                         .IsUnicode(true);
-
-                    b.Property<long>("UserId");
 
                     b.HasKey("Id");
 
@@ -144,8 +173,6 @@ namespace Warehouse.Migrations
                     b.HasIndex("Name")
                         .IsUnique();
 
-                    b.HasIndex("UserId");
-
                     b.ToTable("Stuff","dbo");
                 });
 
@@ -154,6 +181,12 @@ namespace Warehouse.Migrations
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<Guid>("InstanceId")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasDefaultValueSql("NEWID()");
 
                     b.Property<string>("Password")
                         .IsRequired()
@@ -185,7 +218,7 @@ namespace Warehouse.Migrations
                         .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("Warehouse.Models.User", "User")
-                        .WithMany()
+                        .WithMany("Remittances")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict);
                 });
@@ -200,14 +233,6 @@ namespace Warehouse.Migrations
                     b.HasOne("Warehouse.Models.Stuff", "Stuff")
                         .WithMany("RemittanceStuffs")
                         .HasForeignKey("StuffId")
-                        .OnDelete(DeleteBehavior.Restrict);
-                });
-
-            modelBuilder.Entity("Warehouse.Models.Stuff", b =>
-                {
-                    b.HasOne("Warehouse.Models.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict);
                 });
 

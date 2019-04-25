@@ -21,11 +21,30 @@ namespace Warehouse.Migrations
                 {
                     Id = table.Column<byte>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(maxLength: 100, nullable: false)
+                    Name = table.Column<string>(maxLength: 100, nullable: false),
+                    InstanceId = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "NEWID()")
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Store", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Stuff",
+                schema: "dbo",
+                columns: table => new
+                {
+                    Id = table.Column<long>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Name = table.Column<string>(maxLength: 100, nullable: false),
+                    Code = table.Column<string>(maxLength: 50, nullable: false),
+                    Description = table.Column<string>(nullable: true),
+                    CreatedDate = table.Column<DateTime>(nullable: false),
+                    InstanceId = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "NEWID()")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Stuff", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -35,7 +54,8 @@ namespace Warehouse.Migrations
                 {
                     Id = table.Column<long>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(maxLength: 100, nullable: false)
+                    Name = table.Column<string>(maxLength: 100, nullable: false),
+                    InstanceId = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "NEWID()")
                 },
                 constraints: table =>
                 {
@@ -51,7 +71,8 @@ namespace Warehouse.Migrations
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     UserName = table.Column<string>(maxLength: 100, nullable: false),
                     Password = table.Column<string>(maxLength: 100, nullable: false),
-                    RoleId = table.Column<long>(nullable: false)
+                    RoleId = table.Column<long>(nullable: false),
+                    InstanceId = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "NEWID()")
                 },
                 constraints: table =>
                 {
@@ -77,7 +98,8 @@ namespace Warehouse.Migrations
                     InDate = table.Column<DateTime>(nullable: false, defaultValueSql: "GETDATE()"),
                     StoreId = table.Column<byte>(nullable: false),
                     UserId = table.Column<long>(nullable: false),
-                    Description = table.Column<string>(nullable: true)
+                    Description = table.Column<string>(nullable: true),
+                    InstanceId = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "NEWID()")
                 },
                 constraints: table =>
                 {
@@ -99,31 +121,6 @@ namespace Warehouse.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Stuff",
-                schema: "dbo",
-                columns: table => new
-                {
-                    Id = table.Column<long>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(maxLength: 100, nullable: false),
-                    Code = table.Column<string>(maxLength: 50, nullable: false),
-                    Description = table.Column<string>(nullable: true),
-                    CreatedDate = table.Column<DateTime>(nullable: false),
-                    UserId = table.Column<long>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Stuff", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Stuff_User_UserId",
-                        column: x => x.UserId,
-                        principalSchema: "SEC",
-                        principalTable: "User",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "RemittanceStuff",
                 schema: "dbo",
                 columns: table => new
@@ -132,7 +129,8 @@ namespace Warehouse.Migrations
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     RemittanceId = table.Column<long>(nullable: false),
                     StuffId = table.Column<long>(nullable: false),
-                    Count = table.Column<int>(nullable: false)
+                    Count = table.Column<int>(nullable: false),
+                    InstanceId = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "NEWID()")
                 },
                 constraints: table =>
                 {
@@ -173,16 +171,17 @@ namespace Warehouse.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_RemittanceStuff_RemittanceId",
-                schema: "dbo",
-                table: "RemittanceStuff",
-                column: "RemittanceId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_RemittanceStuff_StuffId",
                 schema: "dbo",
                 table: "RemittanceStuff",
                 column: "StuffId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_RemittanceStuff_RemittanceId_StuffId",
+                schema: "dbo",
+                table: "RemittanceStuff",
+                columns: new[] { "RemittanceId", "StuffId" },
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Store_Name",
@@ -204,12 +203,6 @@ namespace Warehouse.Migrations
                 table: "Stuff",
                 column: "Name",
                 unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Stuff_UserId",
-                schema: "dbo",
-                table: "Stuff",
-                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Role_Name",

@@ -5,9 +5,9 @@
     using Microsoft.EntityFrameworkCore.Metadata.Builders;
     using Warehouse.Models;
 
-    public class UserConfig : IEntityTypeConfiguration<UserDto>
+    public class UserConfig : IEntityTypeConfiguration<User>
     {
-        public void Configure(EntityTypeBuilder<UserDto> builder)
+        public void Configure(EntityTypeBuilder<User> builder)
         {
             builder.HasKey(e => e.Id);
 
@@ -47,11 +47,6 @@
                 .HasMany(user => user.Remittances)
                 .WithOne(remittance => remittance.User)
                 .HasForeignKey(remittance => remittance.UserId);
-
-            builder
-                .HasMany(user => user.Stuffs)
-                .WithOne(stuff => stuff.User)
-                .HasForeignKey(stuff => stuff.UserId);
 
             builder.ToTable("User", "SEC");
         }

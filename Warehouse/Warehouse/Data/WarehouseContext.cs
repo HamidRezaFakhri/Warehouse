@@ -4,13 +4,13 @@
     using System.Linq;
     using System.Reflection;
     using Microsoft.EntityFrameworkCore;
+    using Warehouse.Data;
 
-    public class WarehouseContext : DbContext
+    public class WarehouseContext : EntityContextBase<WarehouseContext>
     {
         public WarehouseContext(DbContextOptions<WarehouseContext> options)
             : base(options)
-        {
-        }
+        { }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -41,15 +41,17 @@
                 dynamic config = Activator.CreateInstance(configType);
                 modelBuilder.ApplyConfiguration(config);
             }
+
+            //modelBuilder.LowerCaseTablesAndFields();
         }
 
-        public virtual DbSet<StoreDto> Store { get; set; }
+        public virtual DbSet<Store> Store { get; set; }
 
         public virtual DbSet<Stuff> Stuffs { get; set; }
 
         public virtual DbSet<Role> Roles { get; set; }
 
-        public virtual DbSet<UserDto> Users { get; set; }
+        public virtual DbSet<User> Users { get; set; }
 
         public virtual DbSet<Remittance> Remittances { get; set; }
 

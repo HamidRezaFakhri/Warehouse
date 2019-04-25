@@ -2,14 +2,13 @@
 {
     using System;
     using System.Collections.Generic;
-    
-    public class Role
-    {
-        public long Id { get; set; }
+    using Warehouse.Entities;
 
+    public class Role : EntityBase
+    {
         public string Name { get; set; }
 
-        public virtual ICollection<UserDto> Users { get; set; }
+        public virtual ICollection<User> Users { get; set; }
 
         public Guid InstanceId { get; set; }
     }
