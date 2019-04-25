@@ -10,7 +10,7 @@ using Warehouse.Models;
 namespace Warehouse.Migrations
 {
     [DbContext(typeof(WarehouseContext))]
-    [Migration("20190425015100_init")]
+    [Migration("20190425170405_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -47,7 +47,7 @@ namespace Warehouse.Migrations
 
                     b.Property<byte>("RemittanceType");
 
-                    b.Property<byte>("StoreId");
+                    b.Property<long>("StoreId");
 
                     b.Property<long>("UserId");
 
@@ -118,7 +118,7 @@ namespace Warehouse.Migrations
 
             modelBuilder.Entity("Warehouse.Models.Store", b =>
                 {
-                    b.Property<byte>("Id")
+                    b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 

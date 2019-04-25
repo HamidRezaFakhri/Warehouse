@@ -19,7 +19,7 @@ namespace Warehouse.Migrations
                 schema: "dbo",
                 columns: table => new
                 {
-                    Id = table.Column<byte>(nullable: false)
+                    Id = table.Column<long>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Name = table.Column<string>(maxLength: 100, nullable: false),
                     InstanceId = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "NEWID()")
@@ -96,7 +96,7 @@ namespace Warehouse.Migrations
                     Code = table.Column<string>(maxLength: 100, nullable: false),
                     RemittanceType = table.Column<byte>(nullable: false),
                     InDate = table.Column<DateTime>(nullable: false, defaultValueSql: "GETDATE()"),
-                    StoreId = table.Column<byte>(nullable: false),
+                    StoreId = table.Column<long>(nullable: false),
                     UserId = table.Column<long>(nullable: false),
                     Description = table.Column<string>(nullable: true),
                     InstanceId = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "NEWID()")

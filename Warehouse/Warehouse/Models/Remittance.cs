@@ -12,7 +12,7 @@
         
         public DateTime InDate { get; set; } = DateTime.Now;
 
-        public byte StoreId { get; set; }
+        public long StoreId { get; set; }
 
         public virtual Store Store { get; set; }
 

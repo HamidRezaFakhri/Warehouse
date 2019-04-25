@@ -45,7 +45,7 @@ namespace Warehouse.Migrations
 
                     b.Property<byte>("RemittanceType");
 
-                    b.Property<byte>("StoreId");
+                    b.Property<long>("StoreId");
 
                     b.Property<long>("UserId");
 
@@ -116,7 +116,7 @@ namespace Warehouse.Migrations
 
             modelBuilder.Entity("Warehouse.Models.Store", b =>
                 {
-                    b.Property<byte>("Id")
+                    b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 

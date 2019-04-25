@@ -1,5 +1,4 @@
-﻿using System.IO;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -44,14 +43,21 @@ namespace Warehouse
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
+            ///????????
+            services.AddWebEncoders();
+            services.AddOptions();
+            services.AddLogging();
+
+            services.AddDataAccess<WarehouseContext>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             services.AddDbContext<WarehouseContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("WarehouseContext"),
-                    opts => opts.CommandTimeout(120)));
-
-            services.AddDataAccess<WarehouseContext>();
+                    opts => opts.CommandTimeout(120))
+                    //options.UseLoggerFactory(MyConsoleLoggerFactory)
+                    //options.EnableSensitiveDataLogging(true)
+                    );
         }
 
         private ConnectionString BuildConnectionString(IServiceCollection services)
@@ -68,6 +74,7 @@ namespace Warehouse
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
+            //loggerFactory.AddFile("Logs/mylog-{Date}.txt");
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
 
