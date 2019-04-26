@@ -10,7 +10,7 @@ using Warehouse.Models;
 namespace Warehouse.Migrations
 {
     [DbContext(typeof(WarehouseContext))]
-    [Migration("20190425170405_init")]
+    [Migration("20190426170115_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -113,7 +113,7 @@ namespace Warehouse.Migrations
                     b.HasIndex("Name")
                         .IsUnique();
 
-                    b.ToTable("Role","SEC");
+                    b.ToTable("Role","sec");
                 });
 
             modelBuilder.Entity("Warehouse.Models.Store", b =>
@@ -209,7 +209,44 @@ namespace Warehouse.Migrations
                     b.HasIndex("UserName")
                         .IsUnique();
 
-                    b.ToTable("User","SEC");
+                    b.ToTable("User","sec");
+                });
+
+            modelBuilder.Entity("Warehouse.Models.WSLog", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Exception")
+                        .IsUnicode(true);
+
+                    b.Property<string>("Level")
+                        .HasMaxLength(128)
+                        .IsUnicode(true);
+
+                    b.Property<string>("LogEvent")
+                        .IsUnicode(true);
+
+                    b.Property<string>("Message")
+                        .IsUnicode(true);
+
+                    b.Property<string>("MessageTemplate")
+                        .IsUnicode(true);
+
+                    b.Property<string>("OtherData")
+                        .HasMaxLength(50);
+
+                    b.Property<string>("Properties")
+                        .HasColumnType("xml");
+
+                    b.Property<DateTime>("TimeStamp");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TimeStamp");
+
+                    b.ToTable("Logs","dbo");
                 });
 
             modelBuilder.Entity("Warehouse.Models.Remittance", b =>

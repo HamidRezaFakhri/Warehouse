@@ -12,7 +12,28 @@ namespace Warehouse.Migrations
                 name: "dbo");
 
             migrationBuilder.EnsureSchema(
-                name: "SEC");
+                name: "sec");
+
+            migrationBuilder.CreateTable(
+                name: "Logs",
+                schema: "dbo",
+                columns: table => new
+                {
+                    Id = table.Column<long>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Message = table.Column<string>(nullable: true),
+                    MessageTemplate = table.Column<string>(nullable: true),
+                    Level = table.Column<string>(maxLength: 128, nullable: true),
+                    TimeStamp = table.Column<DateTime>(nullable: false),
+                    Exception = table.Column<string>(nullable: true),
+                    Properties = table.Column<string>(type: "xml", nullable: true),
+                    LogEvent = table.Column<string>(nullable: true),
+                    OtherData = table.Column<string>(maxLength: 50, nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Logs", x => x.Id);
+                });
 
             migrationBuilder.CreateTable(
                 name: "Store",
@@ -49,7 +70,7 @@ namespace Warehouse.Migrations
 
             migrationBuilder.CreateTable(
                 name: "Role",
-                schema: "SEC",
+                schema: "sec",
                 columns: table => new
                 {
                     Id = table.Column<long>(nullable: false)
@@ -64,7 +85,7 @@ namespace Warehouse.Migrations
 
             migrationBuilder.CreateTable(
                 name: "User",
-                schema: "SEC",
+                schema: "sec",
                 columns: table => new
                 {
                     Id = table.Column<long>(nullable: false)
@@ -80,7 +101,7 @@ namespace Warehouse.Migrations
                     table.ForeignKey(
                         name: "FK_User_Role_RoleId",
                         column: x => x.RoleId,
-                        principalSchema: "SEC",
+                        principalSchema: "sec",
                         principalTable: "Role",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
@@ -114,7 +135,7 @@ namespace Warehouse.Migrations
                     table.ForeignKey(
                         name: "FK_Remittance_User_UserId",
                         column: x => x.UserId,
-                        principalSchema: "SEC",
+                        principalSchema: "sec",
                         principalTable: "User",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
@@ -150,6 +171,12 @@ namespace Warehouse.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Logs_TimeStamp",
+                schema: "dbo",
+                table: "Logs",
+                column: "TimeStamp");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Remittance_Code",
@@ -206,20 +233,20 @@ namespace Warehouse.Migrations
 
             migrationBuilder.CreateIndex(
                 name: "IX_Role_Name",
-                schema: "SEC",
+                schema: "sec",
                 table: "Role",
                 column: "Name",
                 unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_User_RoleId",
-                schema: "SEC",
+                schema: "sec",
                 table: "User",
                 column: "RoleId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_User_UserName",
-                schema: "SEC",
+                schema: "sec",
                 table: "User",
                 column: "UserName",
                 unique: true);
@@ -227,6 +254,10 @@ namespace Warehouse.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "Logs",
+                schema: "dbo");
+
             migrationBuilder.DropTable(
                 name: "RemittanceStuff",
                 schema: "dbo");
@@ -245,11 +276,11 @@ namespace Warehouse.Migrations
 
             migrationBuilder.DropTable(
                 name: "User",
-                schema: "SEC");
+                schema: "sec");
 
             migrationBuilder.DropTable(
                 name: "Role",
-                schema: "SEC");
+                schema: "sec");
         }
     }
 }

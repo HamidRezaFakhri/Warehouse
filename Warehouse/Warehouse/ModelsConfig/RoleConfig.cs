@@ -38,7 +38,7 @@
                 .HasDefaultValueSql("NEWID()")
                 .IsConcurrencyToken();
 
-            builder.ToTable("Role", "SEC");
+            builder.ToTable("Role", "sec");
         }
     }
 }

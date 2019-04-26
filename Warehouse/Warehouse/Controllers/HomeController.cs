@@ -2,6 +2,8 @@
 using System.Diagnostics;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using Serilog;
 using Warehouse.DataAccess.Base.UOW;
 using Warehouse.Models;
 
@@ -9,15 +11,20 @@ namespace Warehouse.Controllers
 {
     public class HomeController : Controller
     {
+        private ILogger<HomeController> _logger;
+
         private readonly IUowProvider _uowProvider;
 
-        public HomeController(IUowProvider uowProvider)
+        public HomeController(IUowProvider uowProvider, ILogger<HomeController> logger)
         {
             _uowProvider = uowProvider;
+            _logger = logger;
         }
 
         public async Task<IActionResult> Index()
         {
+            _logger.LogInformation("Hi");
+            Log.Logger.ForContext("OtherData", "Test Data").Information("Index method called!!!");
             //await Seed();
 
             IEnumerable<Store> stores = null;

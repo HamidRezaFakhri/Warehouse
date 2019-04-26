@@ -48,7 +48,7 @@
                 .WithOne(remittance => remittance.User)
                 .HasForeignKey(remittance => remittance.UserId);
 
-            builder.ToTable("User", "SEC");
+            builder.ToTable("User", "sec");
         }
     }
 }
