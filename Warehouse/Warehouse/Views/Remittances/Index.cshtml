@@ -1,0 +1,55 @@
+﻿@model IEnumerable<Warehouse.Models.Remittance>
+
+@{
+	ViewData["Title"] = "حواله انبار";
+}
+
+<h1>حواله ورود/خروج</h1>
+
+<p>
+	<a asp-action="Create">جدید</a>
+</p>
+<table class="table">
+	<thead>
+		<tr>
+			<th>
+				کد
+			</th>
+			<th>
+				نوع حواله
+			</th>
+			<th>
+				تاریخ
+			</th>
+			<th>
+				شرح
+			</th>
+			<th></th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var item in Model)
+		{
+			<tr>
+				<td>
+					@Html.DisplayFor(modelItem => item.Code)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.RemittanceType)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.InDate)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.Description)
+				</td>
+				<td>
+					<a asp-action="Edit" asp-route-id="@item.Id">ویرایش</a> |
+					<a asp-action="Details" asp-route-id="@item.Id">جزئیات</a> |
+					<a asp-action="Delete" asp-route-id="@item.Id">حذف</a> |
+					<a asp-controller="RemittanceStuffs" asp-action="Index" asp-route-id="@item.Id">اقلام</a>
+				</td>
+			</tr>
+		}
+	</tbody>
+</table>

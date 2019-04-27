@@ -1,0 +1,29 @@
+﻿@{
+	ViewData["Title"] = "Login";
+}
+
+<div class="login-box">
+	<form method="post" asp-controller="IncommingUser" asp-action="Login" class="login-form">
+		@*<form method="post" class="login-form" action="index.html">*@
+		<h3 class="login-head"><i class="fa fa-lg fa-fw fa-user"></i>اهراز هویت</h3>
+
+		@if (!string.IsNullOrEmpty(Model))
+		{
+			<div class="container alert alert-danger">
+				@Model
+			</div>
+		}
+
+		<div class="form-group">
+			<label for="userName" class="control-label">نام کاربری</label>
+			<input class="form-control" type="text" placeholder="نام کاربری خود را وارد نمائید" name="userName" required autofocus>
+		</div>
+		<div class="form-group">
+			<label for="pass" class="control-label">گذرواژه</label>
+			<input class="form-control" type="password" placeholder="رمز عبور خود را وارد نمائید" name="pass" required>
+		</div>
+		<div class="form-group btn-container">
+			<button type="submit" class="btn btn-primary btn-block"><i class="fa fa-sign-in fa-lg fa-fw"></i>ورود</button>
+		</div>
+	</form>
+</div>

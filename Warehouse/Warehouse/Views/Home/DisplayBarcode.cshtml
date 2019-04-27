@@ -1,0 +1,17 @@
+﻿@{
+	ViewBag.Title = "DisplayBarcode";
+}
+<hr />
+<div class="form-horizontal">
+	<div class="row">
+		<div class="col-md-8">
+			<img src="@Url.Action("RenderBarcode", "Users",new {userid="accus-5689"})" /><hr />
+
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-8">
+			<img src="@Url.Action("RenderBarcode", "Users",new {userid="7987977987"})" width="450" height="80" />
+		</div>
+	</div>
+</div>

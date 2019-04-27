@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using System;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -9,6 +10,8 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Serilog;
 using Warehouse.Extentions;
+using Warehouse.Filters;
+using Warehouse.MiddleWares;
 using Warehouse.Models;
 using Warehouse.Options;
 using Warehouse.StartUp;
@@ -52,7 +55,24 @@ namespace Warehouse
 
             services.AddDataAccess<WarehouseContext>();
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            //services.AddScoped<AuthenticationFilter>();
+
+            services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromMinutes(20);//You can set Time   
+            });
+
+            services.AddAntiforgery();
+
+            services
+                .AddMvc()
+                //.AddMvc(config =>
+                //{
+                //    config.Filters.Add(new AuthenticationFilter());
+                //})
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
+            //services.AddApiVersioning();
 
             services.AddDbContext<WarehouseContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("WarehouseContext"),
@@ -85,19 +105,39 @@ namespace Warehouse
             }
             else
             {
-                app.UseWebApiExceptionHandler();
-                //app.UseExceptionHandler("/Home/Error");
+                //app.UseWebApiExceptionHandler();
+                app.UseExceptionHandler("/Home/Error");
             }
 
+            //app.ConfigureExceptionHandler();
+
             app.UseStaticFiles();
-            app.UseCookiePolicy();
+            //app.UseCookiePolicy();
+
+            // Authenticate before the user accesses secure resources.
+            //app.UseAuthentication();
+
+            // If the app uses session state, call Session Middleware after Cookie 
+            // Policy Middleware and before MVC Middleware.
+            app.UseSession();
+
+            //app.UseResponseCompression();
+            //app.UseMvcWithDefaultRoute();
 
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
+                    template: "{controller=Home}/{action=Login}/{id?}");
             });
+
+            //app.UseMiddleware<AuthorizationMiddleware>();
+
+            //app.Use((context, next) =>
+            //{
+            //    context.Response.Headers.Add("X-Xss-Protection", "1");
+            //    return next();
+            //});
         }
     }
 }
